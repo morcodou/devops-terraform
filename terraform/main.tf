@@ -14,27 +14,3 @@ provider "azurerm" {
   skip_provider_registration = true
   features {}
 }
- 
-data "azurerm_client_config" "current" {}
- 
-#Create Resource Group
-resource "azurerm_resource_group" "tfdevopsgithubsrg" {
-  name     = "tfdevops-githubs-rg"
-  location = "canadacentral"
-}
- 
-#Create Virtual Network
-resource "azurerm_virtual_network" "tfdevopsgithubvnet" {
-  name                = "myvnet"
-  address_space       = ["192.168.0.0/16"]
-  location            = azurerm_resource_group.tfdevopsgithubsrg.location
-  resource_group_name = azurerm_resource_group.tfdevopsgithubsrg.name
-}
- 
-# Create Subnet
-resource "azurerm_subnet" "tfdevopsgithubsubnet" {
-  name                 = "mysubnet"
-  resource_group_name  = azurerm_resource_group.tfdevopsgithubsrg.name
-  virtual_network_name = azurerm_virtual_network.tfdevopsgithubvnet.name
-  address_prefix       = "192.168.0.0/24"
-}
